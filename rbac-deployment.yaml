@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kube-hunter
+  labels:
+    app: kube-hunter
+spec:
+  template:
+    metadata:
+      labels:
+        app: kube-hunter
+    spec:
+      serviceAccountName: kube-hunter-sa  # Use the correct service account
+      restartPolicy: OnFailure #Never
+      containers:
+      - name: kube-hunter
+        image: tsephel24/kube-hunter-rbac
+        command: ["kube-hunter"]
+        args: ["--active", "--pod", "--report=json"]
+        imagePullPolicy: Always
